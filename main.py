@@ -523,10 +523,6 @@ async def account_login(bot: Client, m: Message):
                 count += 1
                 continue
 
-    except Exception as e:
-        await m.reply_text(e)
-    time.sleep(2)
-
 
     if failed_links:
     error_file_send = await m.reply_text("**📤 Sending you Failed Downloads List **")
