@@ -35,6 +35,8 @@ bot = Client(
 auth_users = [5680454765]
 owner_id = 5680454765
 
+cookies_file_path = os.getenv("COOKIES_FILE_PATH", "youtube_cookies.txt")
+
 failed_links = []
 fail_cap = "**➜ This file contains failed downloads while downloading. You can retry them one more time.**"
 
