@@ -18,14 +18,3 @@ LOG = True  # Set to False if logging is not required
 # Uncomment or define auth_chats if needed
 # auth_chats = []
 
-# Admins list
-try:
-    ADMINS = []
-    for x in (os.environ.get("ADMINS", "1928404158").split()):  # Default admin: 502980590
-        ADMINS.append(int(x))
-except ValueError:
-    raise Exception("Your Admins list does not contain valid integers.")
-ADMINS.append(OWNER)
-
-
-
