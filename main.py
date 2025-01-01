@@ -34,10 +34,6 @@ bot = Client("bot",
              #bot_token= os.environ.get("BOT_TOKEN"),
              api_id= 28094744,
              api_hash= "a75af4285edc7747c57bb19147ca0b9b")
-auth_users = [1928404158, 5326215308, 8019643178]
-#romeo  
-
-owner_id = 1928404158
 # Extras 
 failed_links = []  # List to store failed links
 fail_cap =f"**➜ This file Contain Failed Downloads while Downloding \n You Can Retry them one more time **"
@@ -138,10 +134,6 @@ async def start_command(bot: Client, message: Message):
 
 @bot.on_message(filters.command('h2t'))
 async def run_bot(bot: Client, m: Message):
-    user_id = m.from_user.id
-    if user_id not in auth_users:
-        await m.reply_text("**HEY BUDDY THIS IS ONLY FOR MY ADMINS TO USE THIS CONATCH MY DEV : @AllCourseADMIN_BOT  **")
-    else:
         editable = await m.reply_text(" Send Your HTML file\n")
         input: Message = await bot.listen(editable.chat.id)
         html_file = await input.download()
