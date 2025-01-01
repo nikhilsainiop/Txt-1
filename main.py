@@ -353,9 +353,6 @@ async def account_login(bot: Client, m: Message):
             elif "youtube.com" in url or "youtu.be" in url:
                   cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
-if "m3u8" or "livestream" in url:
-    cmd = f'yt-dlp -f "{ytf}" --no-keep-video --remux-video mkv "{url}" -o "romeo.mp4"'
-
 try:
     cc = (f'**🎥 VIDEO ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} {res} 🥀 NIKHIL.mkv\n\n'
           f'<pre><code>🔖 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}**')
