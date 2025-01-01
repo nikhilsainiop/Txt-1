@@ -351,9 +351,7 @@ async def account_login(bot: Client, m: Message):
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
 
             elif "youtube.com" in url or "youtu.be" in url:
-    
-else:
-    cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
+                  cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
 if "m3u8" or "livestream" in url:
     cmd = f'yt-dlp -f "{ytf}" --no-keep-video --remux-video mkv "{url}" -o "romeo.mp4"'
