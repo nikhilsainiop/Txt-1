@@ -515,14 +515,7 @@ async def account_login(bot: Client, m: Message):
                     time.sleep(1)
                     await helper.send_vid(bot, m, cc, filename, thumb, name, thumb2)
                     count += 1
-                    
-
-            except Exception as e:
-                await m.reply_text(f"**This #Failed File is not Counted**\n**Name** =>> `{name1}`\n**Link** =>> `{url}`\n\n ** Fail reason »** {e}")
-                failed_links.append(f"{name1} : {url}")
-                count += 1
-                continue
-
+                  
 
     if failed_links:
     error_file_send = await m.reply_text("**📤 Sending you Failed Downloads List **")
