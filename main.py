@@ -230,10 +230,6 @@ async def restart_handler(_, m):
 @bot.on_message(filters.command(["drm"]))
 async def account_login(bot: Client, m: Message):
     global processing_request
-    if m.from_user.id not in auth_users:
-            await m.reply_text("** YOU ARE NOT IN ADMIN LIST **",reply_markup=keyboard)
-            return
-
     if processing_request:
             await m.reply_text("**🫨 I'm currently processing another request.\n Please try again later.**",reply_markup=Busy)
             return
