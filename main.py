@@ -349,107 +349,88 @@ async def account_login(bot: Client, m: Message):
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
 
             elif "youtube.com" in url or "youtu.be" in url:
-                cmd = f'yt-dlp --cookies youtube_cookies.txt -f "{ytf}" "{url}" -o "{name}".mp4'
+    cmd = f'yt-dlp --cookies youtube_cookies.txt -f "{ytf}" "{url}" -o "{name}".mp4'
 
+else:
+    cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
+
+if "m3u8" or "livestream" in url:
+    cmd = f'yt-dlp -f "{ytf}" --no-keep-video --remux-video mkv "{url}" -o "romeo.mp4"'
+
+try:
+    cc = (f'**🎥 VIDEO ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} {res} 🥀 NIKHIL.mkv\n\n'
+          f'<pre><code>🔖 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}**')
+    cc1 = (f'**📁 FILE ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} SAINI.pdf \n\n'
+           f'<pre><code>🔖 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}**')
+
+    if "drive" in url:
+        ka = await helper.download(url, name)
+        await bot.send_document(chat_id=m.chat.id, document=ka, caption=cc1)
+        count += 1
+        os.remove(ka)
+        time.sleep(1)
+
+    elif ".pdf" in url:
+        try:
+            time.sleep(1)
+            cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
+            download_cmd = f"{cmd} -R 25 --fragment-retries 25"
+            os.system(download_cmd)
+            time.sleep(1)
+            start_time = time.time()
+            reply = await m.reply_text(f"**⚡️ Starting Uploading ...** - `{name}`")
+            time.sleep(1)
+            if raw_text7 == "custom":
+                subprocess.run(['wget', thumb3, '-O', 'pdfthumb.jpg'], check=True)
+                thumbnail = "pdfthumb.jpg"
+                copy = await bot.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1, thumb=thumbnail, progress=progress_bar, progress_args=(reply, start_time))
+                os.remove(thumbnail)
+            elif thumb == "no" and raw_text7 == "no":
+                copy = await bot.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1, progress=progress_bar, progress_args=(reply, start_time))
+            elif raw_text7 == "yes" and thumb != "no":
+                subprocess.run(['wget', thumb2, '-O', 'thumb1.jpg'], check=True)
+                thumbnail = "thumb1.jpg"
+                copy = await bot.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1, thumb=thumbnail, progress=progress_bar, progress_args=(reply, start_time))
             else:
-                cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
+                subprocess.run(['wget', thumb2, '-O', 'thumb1.jpg'], check=True)
+                thumbnail = "thumb1.jpg"
+                copy = await bot.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1, thumb=thumbnail, progress=progress_bar, progress_args=(reply, start_time))
+            await reply.delete()
+            os.remove(f'{name}.pdf')
+            count += 1
+            time.sleep(2)
+        except FloodWait as e:
+            time.sleep(e.x)
+            continue
 
-            if "m3u8" or "livestream" in url:
-                cmd = f'yt-dlp -f "{ytf}" --no-keep-video --remux-video mkv "{url}" -o "romeo.mp4"'
+    else:
+        prog = await m.reply_text(f"📥 **Downloading **\n\n**➭ Count » {str(count).zfill(3)} **\n**➭ Video Name » ** `{name}`\n**➭ Quality** » `{raw_text2}`\n**➭ Video Url »*[...]")
+        time.sleep(2)
+        res_file = await helper.drm_download_video(url, quality, name, key)
+        filename = res_file
+        await prog.delete()
+        time.sleep(1)
+        await helper.send_vid(bot, m, cc, filename, thumb, name, thumb2)
+        count += 1
 
-            try:
-                cc = (f'**🎥 VIDEO ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} {res} 🥀 NIKHIL.mkv\n\n'
-                      f'<pre><code>🔖 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}**')
-                cc1 = (f'**📁 FILE ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} SAINI.pdf \n\n'
-                       f'<pre><code>🔖 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}**')
+except Exception as e:
+    await m.reply_text(f"**This #Failed File is not Counted**\n**Name** =>> `{name1}`\n**Link** =>> `{url}`\n\n ** Fail reason »** {e}")
+    failed_links.append(f"{name1} : {url}")
+    count += 1
+    continue
 
-                if "drive" in url:
-                    ka = await helper.download(url, name)
-                    await bot.send_document(chat_id=m.chat.id, document=ka, caption=cc1)
-                    count += 1
-                    os.remove(ka)
-                    time.sleep(1)
-                    except FloodWait as e: 
-                        await m.reply_text(str(e))
-                        time.sleep(e.x)
-                        continue
-                        
-                elif ".pdf" in url:
-                    try:
-                        time.sleep(1)
-                        #prog = await m.reply_text(f"📥 **Downloading **\n\n**➭ Index » {str(count).zfill(3)} **\n**➭ File » ** `{name}`\n**➭ Link »** `{url}`\n\n✨ **Bot Made by @AllCourseADMIN_BOT**\n**━━━━━━━✦✗✦━━━━━━━**")
-                        cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
-                        download_cmd = f"{cmd} -R 25 --fragment-retries 25"
-                        os.system(download_cmd)
-                        time.sleep(1)
-                        #await prog.delete (True)
-                        start_time = time.time()
-                        reply = await m.reply_text(f"**⚡️ Starting Uploding ...** - `{name}`")
-                        time.sleep(1)
-                        if raw_text7 == "custom" :
-                           subprocess.run(['wget', thumb3, '-O', 'pdfthumb.jpg'], check=True)  
-                           thumbnail = "pdfthumb.jpg"
-                           copy = await bot.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1, thumb=thumbnail, progress=progress_bar, progress_args=(reply, start_time))
-                           os.remove(thumbnail)
-                        elif thumb == "no" and raw_text7 == "no":
-                        
-                             copy = await bot.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1, progress=progress_bar, progress_args=(reply, start_time))
-                        elif raw_text7 == "yes" and thumb != "no":
-                              subprocess.run(['wget', thumb2, '-O', 'thumb1.jpg'], check=True)  # Fixing this line
-                              thumbnail = "thumb1.jpg"
-                              copy = await bot.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1,thumb=thumbnail, progress=progress_bar, progress_args=(reply, start_time))
-                        else:
-                            subprocess.run(['wget', thumb2, '-O', 'thumb1.jpg'], check=True)  
-                            thumbnail = "thumb1.jpg"
-                            copy = await bot.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1, thumb=thumbnail, progress=progress_bar, progress_args=(reply, start_time))
-                        await reply.delete (True)
-                        os.remove(f'{name}.pdf')
-                        count += 1
-                        time.sleep(2)
-                    except FloodWait as e:
-                        #await m.reply_text(str(e))
-                        time.sleep(e.x)
-                        continue
-
-                else:
-                    prog = await m.reply_text(f"📥 **Downloading **\n\n**➭ Count » {str(count).zfill(3)} **\n**➭ Video Name » ** `{name}`\n**➭ Quality** » `{raw_text2}`\n**➭ Video Url »** `{url}`\n**➭ Thumbnail »** `{input6.text}` \n\n✨ **Bot Made by @AllCourseADMIN_BOT**\n**━━━━━━━✦✗✦━━━━━━━**")
-                    time.sleep(2)
-                    res_file = await helper.drm_download_video(url,quality, name,key)
-                    filename = res_file
-                    await prog.delete(True)
-                    time.sleep(1)
-                    await helper.send_vid(bot, m, cc, filename, thumb, name, thumb2)
-                    count += 1
-                    
-
-            except Exception as e:
-                await m.reply_text(f"**This #Failed File is not Counted**\n**Name** =>> `{name1}`\n**Link** =>> `{url}`\n\n ** Fail reason »** {e}")
-                failed_links.append(f"{name1} : {url}")
-                count += 1
-                continue
-
-    except Exception as e:
-        await m.reply_text(e)
-    time.sleep(2)
-
-
-    if failed_links:
-     error_file_send = await m.reply_text("**📤 Sending you Failed Downloads List **")
-     with open("failed_downloads.txt", "w") as f:
+if failed_links:
+    error_file_send = await m.reply_text("**📤 Sending you Failed Downloads List **")
+    with open("failed_downloads.txt", "w") as f:
         for link in failed_links:
             f.write(link + "\n")
-    # After writing to the file, send it
-     await m.reply_document(document="failed_downloads.txt", caption=fail_cap)
-     await error_file_send.delete()
-     failed_links.clear()
-     os.remove(f'failed_downloads.txt')
-    await m.reply_text("🔰Done🔰")
-    await m.reply_text("**✨Thanks for Choosing**")
-    processing_request = False  # Reset the processing flag  
+    await m.reply_document(document="failed_downloads.txt", caption=fail_cap)
+    await error_file_send.delete()
+    failed_links.clear()
+    os.remove('failed_downloads.txt')
+await m.reply_text("🔰Done🔰")
+await m.reply_text("**✨Thanks for Choosing**")
+processing_request = False
 
-
-
-    
-  
-processing_request = False  
+processing_request = False
 bot.run()
