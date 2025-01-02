@@ -1,13 +1,13 @@
 import os
 
 # Fetch API ID and ensure it has a default value
-API_ID = int(os.environ.get("API_ID", "26513107"))  # Replace 12345 with your default
+API_ID = int(os.environ.get("API_ID", "xxxxxxxx"))  # Replace 12345 with your default
 
 # Fetch API_HASH with a default empty string
-API_HASH = os.environ.get("API_HASH", "f14ce4b58dc8812cfc9665588472f2d4")
+API_HASH = os.environ.get("API_HASH", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 # Fetch BOT_TOKEN with a default empty string
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "f14ce4b58dc8812cfc9665588472f2d4")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 # Fetch PASS_DB or use default value 721
 PASS_DB = int(os.environ.get("PASS_DB", "721"))
